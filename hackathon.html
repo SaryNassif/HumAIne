@@ -4,7 +4,8 @@ permalink: /hackathon/
 <!doctype html>
 <html lang="en">
   <head>
-    <base href="/" />
+<base id="site-base" href="/" />
+<script>if (location.protocol === 'file:') document.getElementById('site-base').href = new URL('.', location.href).href;</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Register &amp; Tracks | HumAIne AI Hackathon UAE</title>
@@ -22,6 +23,7 @@ permalink: /hackathon/
     <meta name="twitter:image" content="https://humaine.ae/assets/og-preview.png" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -38,7 +40,7 @@ permalink: /hackathon/
       <section class="hackathon-registration" id="registration">
         <div class="container registration-hero">
           <div>
-            <p class="eyebrow">Join the hackathon</p>
+            <p class="eyebrow">Applications · UAE 2026</p>
             <h1>Registration.</h1>
           </div>
           <!-- Replace with final Google Forms URL. --><a
@@ -59,7 +61,7 @@ permalink: /hackathon/
         <div class="container">
           <div class="section-head">
             <div>
-              <p class="eyebrow">What you will build</p>
+              <p class="eyebrow">Six moves from brief to demo</p>
               <h2 id="roadmap-title">From challenge to product.</h2>
             </div>
             <p>
@@ -137,7 +139,7 @@ permalink: /hackathon/
         <div class="container">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Event timeline</p>
+              <p class="eyebrow">48 hours, four deadlines</p>
               <h2 id="timeline-title">The weekend.</h2>
             </div>
             <p>
@@ -186,7 +188,7 @@ permalink: /hackathon/
         <div class="container">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Guidance & evaluation</p>
+              <p class="eyebrow">The people sharpening your build</p>
               <h2 id="people-title">Judges & mentors.</h2>
             </div>
             <p>
@@ -229,7 +231,7 @@ permalink: /hackathon/
 
       <section class="hackathon-media" aria-labelledby="media-title">
         <div class="container">
-          <p class="eyebrow">Gallery</p>
+          <p class="eyebrow">Event archive · Coming online</p>
           <h2 id="media-title">Media.</h2>
           <div class="empty-media">
             <p>Event media will be published here.</p>

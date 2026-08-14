@@ -4,7 +4,8 @@ permalink: /privacy/
 <!doctype html>
 <html lang="en">
 <head>
-  <base href="/">
+<base id="site-base" href="/">
+<script>if (location.protocol === 'file:') document.getElementById('site-base').href = new URL('.', location.href).href;</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Privacy Policy | HumAIne.ae</title>
@@ -13,6 +14,7 @@ permalink: /privacy/
   <meta name="robots" content="noindex,follow">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -24,7 +26,7 @@ permalink: /privacy/
   <main>
     <section class="legal-page">
       <div class="container legal-copy">
-        <p class="eyebrow">Legal</p>
+        <p class="eyebrow">Your data, your control</p>
         <h1>Privacy Policy.</h1>
         <p class="legal-date">Last updated: August 14, 2026</p>
         <h2>How we handle your information</h2>

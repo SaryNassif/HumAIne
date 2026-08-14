@@ -4,7 +4,8 @@ permalink: /about/
 <!doctype html>
 <html lang="en">
 <head>
-  <base href="/">
+<base id="site-base" href="/">
+<script>if (location.protocol === 'file:') document.getElementById('site-base').href = new URL('.', location.href).href;</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>About | HumAIne.ae</title>
@@ -14,6 +15,7 @@ permalink: /about/
   <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="About HumAIne"><meta name="twitter:description" content="Meet the team behind the UAE AI Hackathon."><meta name="twitter:image" content="https://humaine.ae/assets/og-preview.png">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -28,7 +30,7 @@ permalink: /about/
     <section class="about-intro">
       <div class="container about-intro-layout">
         <div>
-          <p class="eyebrow">About us</p>
+          <p class="eyebrow">Built by students</p>
           <h1>The people behind the hackathon.</h1>
         </div>
         <div class="about-copy">
@@ -44,7 +46,7 @@ permalink: /about/
       <div class="container">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Who we are</p>
+            <p class="eyebrow">Four minds behind HumAIne</p>
             <h2 id="founders-title">Meet the founders.</h2>
           </div>
         </div>

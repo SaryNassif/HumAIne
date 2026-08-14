@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Roboto:wght@500;700;900&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root{--ink:#f4f5ef;--night:#080b0d;--panel:#111619;--soft:#9ca7a3;--line:rgba(255,255,255,.12);--lime:#c9ff55;--orange:#ff6b35;--max:1180px}
 *{box-sizing:border-box}
@@ -58,3 +58,30 @@ p{color:var(--soft)}.lede{font-size:clamp(1.05rem,2vw,1.35rem);max-width:700px;c
 @media(max-width:900px){.countdown-layout,.value-layout,.faq-layout,.roadmap-grid{grid-template-columns:1fr}.people-grid{grid-template-columns:repeat(2,1fr)}.countdown-hero{min-height:auto}.value-feature{min-height:420px}.faq-layout{gap:40px}}
 @media(max-width:600px){.countdown-hero{padding:70px 0}.countdown-layout{gap:45px}.countdown-panel{padding:18px}.countdown-units div{padding:13px}.value-feature{padding:30px;min-height:390px}.people-grid{grid-template-columns:1fr 1fr}.roadmap-output{padding:28px}.faq-section,.why-join,.build-roadmap,.people-section{padding:70px 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ai-grid span{animation:none}.text-link span{transition:none}}
+
+/* Dark technical visual system */
+h1,h2{font-family:'Roboto',sans-serif;font-weight:900;letter-spacing:-.055em}
+body:before{opacity:.42;background-image:linear-gradient(rgba(201,255,85,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(201,255,85,.045) 1px,transparent 1px);background-size:44px 44px}
+.light-section,.home-sponsors,.faq-section,.hackathon-timeline{background:var(--night);color:var(--ink)}
+.light-section p,.home-sponsors p,.faq-section p,.hackathon-timeline p{color:var(--soft)}
+.light-section .eyebrow,.home-sponsors .eyebrow,.faq-section .eyebrow,.hackathon-timeline .eyebrow{color:var(--lime)}
+.light-section .eyebrow:before,.home-sponsors .eyebrow:before,.faq-section .eyebrow:before,.hackathon-timeline .eyebrow:before{background:var(--lime)}
+.home-sponsors,.faq-section,.hackathon-timeline{border-block:1px solid var(--line)}
+.sponsor-image{background:var(--panel);border-color:var(--line)}
+.sponsor-image span,.sponsor-item figcaption{color:var(--ink)}
+.sponsor-image--open span{color:var(--soft)}
+.faq-list{border-color:var(--line)}.faq-list details{border-color:var(--line)}.faq-list details strong{color:var(--lime)}
+.event-timeline:before{background:rgba(201,255,85,.28)}
+.timeline-marker{background:var(--lime);color:var(--night);border-radius:0}
+.timeline-content time{color:var(--lime)}
+
+.cube-stage{height:245px;display:grid;place-items:center;position:relative;perspective:800px;border-bottom:1px solid var(--line);margin-bottom:24px;overflow:hidden}
+.data-cube{position:relative;width:92px;height:92px;transform-style:preserve-3d;animation:cube-turn 10s linear infinite}
+.cube-face{position:absolute;inset:0;display:grid;place-items:center;border:1px solid var(--lime);background:rgba(8,11,13,.82);color:var(--lime);font:700 .72rem 'Space Grotesk';letter-spacing:.12em;backface-visibility:visible}
+.cube-front{transform:translateZ(46px)}.cube-back{transform:rotateY(180deg) translateZ(46px)}.cube-right{transform:rotateY(90deg) translateZ(46px)}.cube-left{transform:rotateY(-90deg) translateZ(46px)}.cube-top{transform:rotateX(90deg) translateZ(46px)}.cube-bottom{transform:rotateX(-90deg) translateZ(46px)}
+.cube-axis{position:absolute;width:190px;height:190px;border:1px solid rgba(201,255,85,.18);transform:rotate(45deg);animation:axis-pulse 3s ease-in-out infinite}
+@keyframes cube-turn{from{transform:rotateX(-18deg) rotateY(0)}to{transform:rotateX(342deg) rotateY(360deg)}}
+@keyframes axis-pulse{0%,100%{transform:rotate(45deg) scale(.82);opacity:.25}50%{transform:rotate(225deg) scale(1);opacity:.8}}
+.cursor-network{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90;opacity:.62}
+@media(max-width:760px),(pointer:coarse){.cursor-network{display:none}.cube-stage{height:200px}}
+@media(prefers-reduced-motion:reduce){.data-cube,.cube-axis{animation:none}.cursor-network{display:none}}

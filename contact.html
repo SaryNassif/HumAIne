@@ -4,7 +4,8 @@ permalink: /contact/
 <!doctype html>
 <html lang="en">
 <head>
-  <base href="/">
+<base id="site-base" href="/">
+<script>if (location.protocol === 'file:') document.getElementById('site-base').href = new URL('.', location.href).href;</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Contact | HumAIne.ae</title>
@@ -14,6 +15,7 @@ permalink: /contact/
   <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Contact HumAIne"><meta name="twitter:description" content="Contact the team behind the UAE AI Hackathon."><meta name="twitter:image" content="https://humaine.ae/assets/og-preview.png">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -28,7 +30,7 @@ permalink: /contact/
     <section class="contact-details" aria-labelledby="contact-title">
       <div class="container">
         <div class="contact-heading">
-          <p class="eyebrow">Contact us</p>
+          <p class="eyebrow">Questions, ideas, access</p>
           <h1 id="contact-title">For any questions?</h1>
         </div>
         <div class="contact-methods">
@@ -50,7 +52,7 @@ permalink: /contact/
       <div class="container sponsor-contact-card">
         <div class="sponsor-contact-number">02</div>
         <div>
-          <p class="eyebrow">For companies</p>
+          <p class="eyebrow">Back the next generation</p>
           <h2 id="sponsor-contact-title">Put your company behind the next big idea.</h2>
           <p>Support talented school and university students as they build ambitious AI solutions. Partner through prizes, technology, mentorship, judging, or a sponsorship shaped around your organization.</p>
         </div>
