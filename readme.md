@@ -1,6 +1,6 @@
 # HumAIne.ae
 
-Front-end website built for the HumAIne.ae AI Citizen Science Hackathon.
+Front-end website built for the HumAIne.ae AI Hackathon.
 
 The website provides information about the event, its founders, registration, timeline, sponsors, media, and contact details.
 
