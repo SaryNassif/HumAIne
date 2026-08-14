@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://humaine.ae/</loc></url>
-  <url><loc>https://humaine.ae/about.html</loc></url>
-  <url><loc>https://humaine.ae/hackathon.html</loc></url>
-  <url><loc>https://humaine.ae/contact.html</loc></url>
+  <url><loc>https://humaine.ae/about/</loc></url>
+  <url><loc>https://humaine.ae/hackathon/</loc></url>
+  <url><loc>https://humaine.ae/contact/</loc></url>
 </urlset>
