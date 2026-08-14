@@ -54,6 +54,14 @@ const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').mat
 const finePointer = window.matchMedia('(pointer: fine)').matches;
 
 if (motionAllowed && finePointer) {
+  const gridLights = [...document.querySelectorAll('main > section')].map(section => {
+    const light = document.createElement('div');
+    light.className = 'mouse-grid-light';
+    light.setAttribute('aria-hidden', 'true');
+    section.prepend(light);
+    return { section, light };
+  });
+
   const canvas = document.createElement('canvas');
   canvas.className = 'cursor-network';
   canvas.setAttribute('aria-hidden', 'true');
@@ -61,7 +69,9 @@ if (motionAllowed && finePointer) {
 
   const context = canvas.getContext('2d');
   const points = [];
+  const trailBlockers = 'a, button, p, h1, h2, h3, li, summary, details, figure, figcaption, .btn, .card, .countdown-panel, .registration-box, .registration-callout, .contact-methods, .contact-method, .value-feature, .value-stack, .roadmap-output, .person-photo, .founder-photo, .sponsor-image, .media-placeholder, .empty-media';
   let pixelRatio = 1;
+  let pointerBlocked = false;
 
   const resizeCanvas = () => {
     pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
@@ -74,12 +84,39 @@ if (motionAllowed && finePointer) {
 
   window.addEventListener('resize', resizeCanvas, { passive: true });
   window.addEventListener('pointermove', event => {
+    pointerBlocked = event.target instanceof Element && Boolean(event.target.closest(trailBlockers));
+    gridLights.forEach(({ section, light }) => {
+      const bounds = section.getBoundingClientRect();
+      const isInside = event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+      const localY = event.clientY - bounds.top;
+      const barriers = [...section.querySelectorAll('.section-head')]
+        .map(element => element.getBoundingClientRect())
+        .filter(barrier => event.clientX >= barrier.left && event.clientX <= barrier.right)
+        .map(barrier => barrier.top - bounds.top)
+        .sort((first, second) => first - second);
+      const barrierAbove = barriers.filter(position => position <= localY).at(-1);
+      const barrierBelow = barriers.find(position => position > localY);
+
+      light.style.setProperty('--mouse-x', `${event.clientX}px`);
+      light.style.setProperty('--mouse-y', `${localY}px`);
+      light.style.setProperty('--clip-top', `${barrierAbove ?? 0}px`);
+      light.style.setProperty('--clip-bottom', `${barrierBelow === undefined ? 0 : bounds.height - barrierBelow}px`);
+      light.classList.toggle('is-active', isInside && !pointerBlocked);
+    });
+    if (pointerBlocked) {
+      points.length = 0;
+      return;
+    }
     points.push({ x: event.clientX, y: event.clientY, life: 1 });
     if (points.length > 22) points.shift();
   }, { passive: true });
 
   const drawTrail = () => {
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    if (pointerBlocked) {
+      requestAnimationFrame(drawTrail);
+      return;
+    }
     for (let index = 0; index < points.length; index += 1) {
       const point = points[index];
       point.life -= 0.028;
