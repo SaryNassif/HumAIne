@@ -60,6 +60,29 @@ if (headerContainer && primaryNavigation) {
   });
 }
 
+const scrollProgress = document.createElement('div');
+scrollProgress.className = 'scroll-progress';
+scrollProgress.setAttribute('aria-hidden', 'true');
+scrollProgress.innerHTML = '<span class="scroll-progress-fill"></span><span class="scroll-progress-marker"></span>';
+document.body.appendChild(scrollProgress);
+
+let progressFrame;
+const updateScrollProgress = () => {
+  progressFrame = null;
+  const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollableHeight > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollableHeight)) : 1;
+  scrollProgress.style.setProperty('--scroll-progress', progress);
+};
+
+const requestProgressUpdate = () => {
+  if (!progressFrame) progressFrame = requestAnimationFrame(updateScrollProgress);
+};
+
+window.addEventListener('scroll', requestProgressUpdate, { passive: true });
+window.addEventListener('resize', requestProgressUpdate, { passive: true });
+window.addEventListener('load', requestProgressUpdate, { once: true });
+updateScrollProgress();
+
 const countdown = document.querySelector('[data-countdown]');
 
 if (countdown) {
@@ -130,7 +153,7 @@ if (motionAllowed && finePointer) {
     pointerBlocked = event.target instanceof Element && Boolean(event.target.closest(trailBlockers));
     gridLights.forEach(({ section, light }) => {
       const bounds = section.getBoundingClientRect();
-      const isInside = event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+      const isInside = event.clientY >= bounds.top - 145 && event.clientY <= bounds.bottom + 145;
       const localY = event.clientY - bounds.top;
       const barriers = [...section.querySelectorAll('.section-head')]
         .map(element => element.getBoundingClientRect())
@@ -181,4 +204,35 @@ if (motionAllowed && finePointer) {
 
   resizeCanvas();
   drawTrail();
+}
+
+if (motionAllowed && 'IntersectionObserver' in window) {
+  document.documentElement.classList.add('motion-ready');
+
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-revealed');
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: .14, rootMargin: '0px 0px -7% 0px' });
+
+  document.querySelectorAll('main > section').forEach(section => {
+    const items = section.querySelectorAll('h1, h2, .lede, .section-head > p, .intro-copy, .about-copy, .registration-box, .contact-methods, .sponsor-contact-card, .legal-date, .legal-copy > p');
+    items.forEach((item, index) => {
+      item.classList.add('reveal-item');
+      item.style.setProperty('--reveal-delay', `${Math.min(index, 4) * 70}ms`);
+      revealObserver.observe(item);
+    });
+  });
+
+  const sequenceObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('sequence-visible');
+      sequenceObserver.unobserve(entry.target);
+    });
+  }, { threshold: .18 });
+
+  document.querySelectorAll('.roadmap-steps, .event-timeline').forEach(element => sequenceObserver.observe(element));
 }
