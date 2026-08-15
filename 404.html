@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base id="site-base" href="/">
+  <script>if (location.protocol === 'file:') document.getElementById('site-base').href = new URL('.', location.href).href;</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Page Not Found | HumAIne.ae</title>
+  <meta name="description" content="The requested page could not be found on HumAIne.ae.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/">Hum<span>AI</span>ne.ae</a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a href="/hackathon/">Hackathon</a>
+        <a class="nav-cta" href="/contact/">Contact us &#8599;</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="error-page">
+      <div class="container error-layout">
+        <p class="error-code" aria-hidden="true">404</p>
+        <div class="error-copy">
+          <h1>Page not found.</h1>
+          <p>The page may have moved, or the address may be incorrect.</p>
+          <a class="btn" href="/">Return home <span>&#8599;</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container legal-footer"><span>&copy; 2026 HumAIne.ae. All rights reserved.</span><nav aria-label="Legal"><a href="/privacy/">Privacy Policy</a><a href="/terms/">Terms &amp; Conditions</a></nav></div></footer>
+</body>
+</html>
