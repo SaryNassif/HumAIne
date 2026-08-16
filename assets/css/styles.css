@@ -80,7 +80,10 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0;
+  gap: 7px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
   text-decoration: none;
 }
 .brand img {
@@ -92,10 +95,12 @@ a {
   height: 34px;
   object-fit: contain;
 }
-.brand-wordmark {
-  width: 142px;
-  height: 36px;
-  object-fit: cover;
+.brand-text {
+  color: var(--ink);
+  white-space: nowrap;
+}
+.brand-text span {
+  color: var(--lime);
 }
 .main-nav {
   display: flex;
