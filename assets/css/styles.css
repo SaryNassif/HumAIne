@@ -1575,6 +1575,32 @@ p {
   }
 }
 
+/* Compact mobile footer */
+@media (max-width: 760px) {
+  .site-footer {
+    padding: 34px 0 30px;
+  }
+  .legal-footer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+  }
+  .footer-brand {
+    width: 112px;
+    height: 43px;
+  }
+  .legal-footer > span {
+    line-height: 1.5;
+  }
+  .legal-footer nav {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+  }
+}
+
 /* Dark technical visual system */
 h1,
 h2 {

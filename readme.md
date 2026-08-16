@@ -30,7 +30,7 @@ The website provides information about the event, its founders, registration, ti
 │   ├── js/                 # JavaScript
 │   ├── fonts/              # Local fonts
 │   └── images/             # Logos, photos, and social preview
-├── favicon.png             # Stable site icon URL for browsers and search
+├── favicon.svg             # Stable site icon URL for browsers and search
 ├── robots.txt
 ├── sitemap.xml
 └── CNAME
