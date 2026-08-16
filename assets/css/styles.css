@@ -78,12 +78,24 @@ a {
   gap: 24px;
 }
 .brand {
-  font: 700 1.2rem "Space Grotesk";
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   text-decoration: none;
-  letter-spacing: -0.04em;
 }
-.brand span {
-  color: var(--lime);
+.brand img {
+  display: block;
+  flex: 0 0 auto;
+}
+.brand-mark {
+  width: 38px;
+  height: 34px;
+  object-fit: contain;
+}
+.brand-wordmark {
+  width: 142px;
+  height: 36px;
+  object-fit: cover;
 }
 .main-nav {
   display: flex;
@@ -468,6 +480,18 @@ p {
   gap: 24px;
   color: var(--soft);
   font-size: 0.8rem;
+}
+.footer-brand {
+  display: block;
+  flex: 0 0 auto;
+  width: 180px;
+  aspect-ratio: 2048 / 970;
+}
+.footer-brand img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .legal-footer nav {
   display: flex;

@@ -20,6 +20,15 @@ if (location.protocol === 'file:') {
 const headerContainer = document.querySelector('.site-header .container');
 const primaryNavigation = document.querySelector('.main-nav');
 
+document.querySelectorAll('.legal-footer').forEach(footer => {
+  const footerBrand = document.createElement('a');
+  footerBrand.className = 'footer-brand';
+  footerBrand.href = location.protocol === 'file:' ? 'index.html' : '/';
+  footerBrand.setAttribute('aria-label', 'HumAIne.ae home');
+  footerBrand.innerHTML = '<img src="assets/images/logoextended.png" alt="HumAIne.ae" width="2048" height="970" loading="lazy">';
+  footer.prepend(footerBrand);
+});
+
 if (headerContainer && primaryNavigation) {
   primaryNavigation.id = 'primary-navigation';
 
