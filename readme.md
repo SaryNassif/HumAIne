@@ -8,6 +8,7 @@ The website provides information about the event, its founders, registration, ti
 
 - HTML
 - CSS
+- JavaScript
 
 ## Pages
 
@@ -17,3 +18,20 @@ The website provides information about the event, its founders, registration, ti
 - Contact
 - Privacy Policy
 - Terms & Conditions
+
+## Project structure
+
+```text
+├── index.html              # Homepage
+├── 404.html                # GitHub Pages error page
+├── pages/                  # Secondary HTML pages
+├── assets/
+│   ├── css/                # Stylesheets
+│   ├── js/                 # JavaScript
+│   ├── fonts/              # Local fonts
+│   └── images/             # Logos, photos, and social preview
+├── favicon.png             # Stable site icon URL for browsers and search
+├── robots.txt
+├── sitemap.xml
+└── CNAME
+```

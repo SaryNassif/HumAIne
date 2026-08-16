@@ -3,11 +3,11 @@
 if (location.protocol === 'file:') {
   const localPages = {
     '/': 'index.html',
-    '/about/': 'about.html',
-    '/hackathon/': 'hackathon.html',
-    '/contact/': 'contact.html',
-    '/privacy/': 'privacy.html',
-    '/terms/': 'terms.html'
+    '/about/': 'pages/about.html',
+    '/hackathon/': 'pages/hackathon.html',
+    '/contact/': 'pages/contact.html',
+    '/privacy/': 'pages/privacy.html',
+    '/terms/': 'pages/terms.html'
   };
 
   document.querySelectorAll('a[href^="/"]').forEach(link => {
