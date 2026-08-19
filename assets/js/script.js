@@ -41,16 +41,22 @@ if (headerContainer && primaryNavigation) {
   menuToggle.innerHTML = '<span></span><span></span><span></span>';
   headerContainer.insertBefore(menuToggle, primaryNavigation);
 
-  const closeMenu = () => {
+  const menuLinks = [...primaryNavigation.querySelectorAll('a')];
+  const menuIsOpen = () => headerContainer.classList.contains('menu-open');
+
+  const closeMenu = ({ restoreFocus = false } = {}) => {
+    if (!menuIsOpen()) return;
     headerContainer.classList.remove('menu-open');
     menuToggle.setAttribute('aria-expanded', 'false');
     menuToggle.setAttribute('aria-label', 'Open navigation menu');
+    if (restoreFocus) menuToggle.focus();
   };
 
   menuToggle.addEventListener('click', () => {
     const isOpen = headerContainer.classList.toggle('menu-open');
     menuToggle.setAttribute('aria-expanded', String(isOpen));
     menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    if (isOpen) menuLinks[0]?.focus();
   });
 
   primaryNavigation.addEventListener('click', event => {
@@ -58,15 +64,35 @@ if (headerContainer && primaryNavigation) {
   });
 
   document.addEventListener('keydown', event => {
+    if (!menuIsOpen()) return;
+
     if (event.key === 'Escape') {
-      closeMenu();
-      menuToggle.focus();
+      closeMenu({ restoreFocus: true });
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      const focusableItems = [menuToggle, ...menuLinks];
+      const firstItem = focusableItems[0];
+      const lastItem = focusableItems.at(-1);
+
+      if (event.shiftKey && document.activeElement === firstItem) {
+        event.preventDefault();
+        lastItem.focus();
+      } else if (!event.shiftKey && document.activeElement === lastItem) {
+        event.preventDefault();
+        firstItem.focus();
+      }
     }
   });
 
   document.addEventListener('click', event => {
     if (!headerContainer.contains(event.target)) closeMenu();
   });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 760) closeMenu();
+  }, { passive: true });
 }
 
 const scrollProgress = document.createElement('div');
@@ -109,7 +135,7 @@ if (countdown) {
     const remaining = target - Date.now();
     if (remaining <= 0) {
       Object.values(fields).forEach(field => { field.textContent = '00'; });
-      status.textContent = 'Registration has closed.';
+      status.textContent = 'The hackathon has begun.';
       return false;
     }
     fields.days.textContent = pad(Math.floor(remaining / 86400000));

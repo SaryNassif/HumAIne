@@ -120,7 +120,7 @@ a {
 .menu-toggle {
   display: none;
   width: 46px;
-  height: 42px;
+  height: 46px;
   padding: 11px;
   background: transparent;
   border: 1px solid var(--line);
@@ -485,6 +485,20 @@ p {
   gap: 24px;
   color: var(--soft);
   font-size: 0.8rem;
+}
+
+/* Accessible pointer and touch targets */
+.main-nav a,
+.btn,
+.text-link,
+.legal-footer a,
+.faq-list summary {
+  min-height: 44px;
+}
+.text-link,
+.legal-footer a {
+  display: inline-flex;
+  align-items: center;
 }
 .footer-brand {
   display: block;
@@ -1902,7 +1916,7 @@ main > section > *:not(.mouse-grid-light) {
 .sponsor-contact-card h2:before {
   display: none;
 }
-.sponsor-contact-card > div {
+.sponsor-contact-card > div:not(.sponsor-contact-number) {
   width: 100%;
   justify-self: start;
 }
