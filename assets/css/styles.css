@@ -1579,6 +1579,28 @@ p {
     transition: none;
   }
 }
+.sponsor-image--empty {
+  background: transparent;
+  border-style: dashed;
+}
+.home-sponsors .sponsor-status {
+  max-width: 820px;
+  margin: 38px 0 0;
+  padding: 20px 22px;
+  border-left: 4px solid var(--lime);
+  background: rgba(201, 255, 85, 0.06);
+  color: var(--soft);
+}
+.home-sponsors .sponsor-status strong {
+  color: var(--ink);
+}
+.home-sponsors .sponsor-disclaimer {
+  max-width: 900px;
+  margin: 22px 0 0;
+  color: var(--soft);
+  font-size: 0.76rem;
+  line-height: 1.65;
+}
 
 /* Compact mobile footer */
 @media (max-width: 760px) {
