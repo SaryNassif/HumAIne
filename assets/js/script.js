@@ -153,8 +153,11 @@ if (countdown) {
 
 const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(pointer: fine)').matches;
+const isLegalPage = Boolean(document.querySelector('.legal-page'));
 
-if (motionAllowed && finePointer) {
+if (isLegalPage) document.documentElement.classList.add('legal-document');
+
+if (motionAllowed && finePointer && !isLegalPage) {
   const gridLights = [...document.querySelectorAll('main > section')].map(section => {
     const light = document.createElement('div');
     light.className = 'mouse-grid-light';
@@ -241,7 +244,7 @@ if (motionAllowed && finePointer) {
   drawTrail();
 }
 
-if (motionAllowed && 'IntersectionObserver' in window) {
+if (motionAllowed && 'IntersectionObserver' in window && !isLegalPage) {
   document.documentElement.classList.add('motion-ready');
 
   const revealObserver = new IntersectionObserver(entries => {
