@@ -614,6 +614,51 @@ p {
   height: 100%;
   object-fit: fill;
 }
+.sponsor-pending-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 150px;
+  padding: clamp(26px, 5vw, 48px);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.sponsor-pending-link small,
+.sponsor-pending-link strong {
+  display: block;
+}
+.sponsor-pending-link small {
+  margin-bottom: 8px;
+  color: var(--soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sponsor-pending-link strong {
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+.sponsor-pending-link > span:last-child {
+  color: var(--lime);
+  font-size: 2rem;
+  transition: transform 0.2s ease;
+}
+.sponsor-pending-link:hover {
+  border-color: var(--lime);
+  background: rgba(201, 255, 85, 0.05);
+}
+.sponsor-pending-link:hover > span:last-child {
+  transform: translate(4px, -4px);
+}
+.sponsor-contact {
+  scroll-margin-top: 82px;
+}
 .home-registration {
   padding: 100px 0;
 }
@@ -1891,6 +1936,15 @@ main > section h2:before {
   max-width: 680px;
   line-height: 1.04;
   letter-spacing: -0.04em;
+}
+.countdown-copy h1 .event-title {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--soft);
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
 }
 .page-hero h1,
 .about-intro h1,
