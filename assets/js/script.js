@@ -151,6 +151,105 @@ if (countdown) {
   }, 1000);
 }
 
+document.querySelectorAll('[data-carousel]').forEach(carousel => {
+  const slides = [...carousel.querySelectorAll('[data-carousel-slide]')];
+  const previousButton = carousel.querySelector('[data-carousel-prev]');
+  const nextButton = carousel.querySelector('[data-carousel-next]');
+  const toggleButton = carousel.querySelector('[data-carousel-toggle]');
+  const dotsContainer = carousel.querySelector('[data-carousel-dots]');
+  const status = carousel.querySelector('[data-carousel-status]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let activeIndex = Math.max(0, slides.findIndex(slide => slide.classList.contains('is-active')));
+  let autoplayTimer = null;
+  let userPaused = reduceMotion;
+  let touchStartX = null;
+
+  if (slides.length < 2 || !previousButton || !nextButton || !dotsContainer) return;
+
+  const dots = slides.map((_, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', `Show photo ${index + 1}`);
+    dot.addEventListener('click', () => showSlide(index, true));
+    dotsContainer.appendChild(dot);
+    return dot;
+  });
+
+  const stopAutoplay = () => {
+    if (!autoplayTimer) return;
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  };
+
+  const startAutoplay = () => {
+    stopAutoplay();
+    if (reduceMotion || userPaused || document.hidden) return;
+    autoplayTimer = setInterval(() => showSlide(activeIndex + 1), 5500);
+  };
+
+  function showSlide(index, restart = false) {
+    activeIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, slideIndex) => {
+      const isActive = slideIndex === activeIndex;
+      slide.classList.toggle('is-active', isActive);
+      slide.setAttribute('aria-hidden', String(!isActive));
+    });
+    dots.forEach((dot, dotIndex) => {
+      const isActive = dotIndex === activeIndex;
+      dot.classList.toggle('is-active', isActive);
+      dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+    });
+    if (status) status.textContent = `Photo ${activeIndex + 1} of ${slides.length}`;
+    if (restart) startAutoplay();
+  }
+
+  previousButton.addEventListener('click', () => showSlide(activeIndex - 1, true));
+  nextButton.addEventListener('click', () => showSlide(activeIndex + 1, true));
+  toggleButton?.addEventListener('click', () => {
+    userPaused = !userPaused;
+    toggleButton.textContent = userPaused ? 'Play' : 'Pause';
+    toggleButton.setAttribute('aria-label', userPaused ? 'Play automatic slideshow' : 'Pause automatic slideshow');
+    if (userPaused) stopAutoplay();
+    else startAutoplay();
+  });
+  carousel.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') showSlide(activeIndex - 1, true);
+    if (event.key === 'ArrowRight') showSlide(activeIndex + 1, true);
+  });
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
+  carousel.addEventListener('focusin', stopAutoplay);
+  carousel.addEventListener('focusout', event => {
+    if (!carousel.contains(event.relatedTarget)) startAutoplay();
+  });
+  carousel.addEventListener('touchstart', event => {
+    touchStartX = event.changedTouches[0]?.clientX ?? null;
+    stopAutoplay();
+  }, { passive: true });
+  carousel.addEventListener('touchend', event => {
+    const touchEndX = event.changedTouches[0]?.clientX;
+    if (touchStartX !== null && touchEndX !== undefined) {
+      const distance = touchEndX - touchStartX;
+      if (Math.abs(distance) > 45) showSlide(activeIndex + (distance < 0 ? 1 : -1));
+    }
+    touchStartX = null;
+    startAutoplay();
+  }, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
+  });
+
+  if (reduceMotion && toggleButton) {
+    toggleButton.textContent = 'Motion off';
+    toggleButton.setAttribute('aria-label', 'Automatic slideshow disabled by reduced motion preference');
+    toggleButton.disabled = true;
+  }
+
+  showSlide(activeIndex);
+  startAutoplay();
+});
+
 const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(pointer: fine)').matches;
 const isLegalPage = Boolean(document.querySelector('.legal-page'));
