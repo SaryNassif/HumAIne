@@ -149,12 +149,6 @@ if (headerContainer && primaryNavigation) {
   }, { passive: true });
 }
 
-const mailingListMessage = document.querySelector('[data-mailing-list-message]');
-if (mailingListMessage && new URLSearchParams(location.search).get('subscribed') === '1') {
-  mailingListMessage.hidden = false;
-  mailingListMessage.focus();
-}
-
 document.querySelectorAll('img').forEach(image => {
   const showImageFallback = () => {
     const container = image.closest('figure, .carousel-slide, .hackathon-hero-image') || image.parentElement;
