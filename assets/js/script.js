@@ -21,6 +21,59 @@ if (location.protocol === 'file:') {
 const headerContainer = document.querySelector('.site-header .container');
 const primaryNavigation = document.querySelector('.main-nav');
 
+if (primaryNavigation) {
+  const hackathonsLink = [...primaryNavigation.querySelectorAll(':scope > a')]
+    .find(link => link.textContent.trim() === 'Hackathons');
+
+  if (hackathonsLink) {
+    const onLocalFile = location.protocol === 'file:';
+    const group = document.createElement('div');
+    group.className = 'nav-menu-group';
+    const toggle = document.createElement('button');
+    toggle.className = 'nav-submenu-toggle';
+    toggle.type = 'button';
+    toggle.setAttribute('aria-label', 'Show Hackathons menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<span aria-hidden="true"></span>';
+    const submenu = document.createElement('div');
+    submenu.className = 'nav-submenu';
+    submenu.innerHTML = `
+      <a href="${onLocalFile ? 'pages/hackathon.html' : '/hackathon/'}">All hackathons</a>
+      <a href="${onLocalFile ? 'pages/blitz-hackathon-2026.html' : '/blitz-hackathon-2026/'}">AMIC Blitz 2026</a>
+    `;
+
+    hackathonsLink.before(group);
+    group.append(hackathonsLink, toggle, submenu);
+
+    const currentPath = location.pathname.toLowerCase();
+    const onBlitzPage = currentPath.includes('blitz-hackathon-2026');
+    const onHackathonsPage = !onBlitzPage && (currentPath.endsWith('/hackathon/') || currentPath.endsWith('/hackathon.html'));
+    if (onBlitzPage || onHackathonsPage) group.classList.add('is-current-section');
+    if (onBlitzPage) {
+      hackathonsLink.removeAttribute('aria-current');
+      submenu.lastElementChild.setAttribute('aria-current', 'page');
+    } else if (onHackathonsPage) {
+      submenu.firstElementChild.setAttribute('aria-current', 'page');
+    }
+
+    const setSubmenu = open => {
+      group.classList.toggle('submenu-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} Hackathons menu`);
+    };
+    toggle.addEventListener('click', event => {
+      event.stopPropagation();
+      setSubmenu(!group.classList.contains('submenu-open'));
+    });
+    group.addEventListener('focusout', event => {
+      if (!group.contains(event.relatedTarget)) setSubmenu(false);
+    });
+    document.addEventListener('click', event => {
+      if (!group.contains(event.target)) setSubmenu(false);
+    });
+  }
+}
+
 document.querySelectorAll('.legal-footer').forEach(footer => {
   const footerBrand = document.createElement('a');
   footerBrand.className = 'footer-brand';
@@ -42,7 +95,7 @@ if (headerContainer && primaryNavigation) {
   menuToggle.innerHTML = '<span></span><span></span><span></span>';
   headerContainer.insertBefore(menuToggle, primaryNavigation);
 
-  const menuLinks = [...primaryNavigation.querySelectorAll('a')];
+  const menuLinks = [...primaryNavigation.querySelectorAll('a, button.nav-submenu-toggle')];
   const menuIsOpen = () => headerContainer.classList.contains('menu-open');
 
   const closeMenu = ({ restoreFocus = false } = {}) => {
@@ -96,28 +149,27 @@ if (headerContainer && primaryNavigation) {
   }, { passive: true });
 }
 
-const scrollProgress = document.createElement('div');
-scrollProgress.className = 'scroll-progress';
-scrollProgress.setAttribute('aria-hidden', 'true');
-scrollProgress.innerHTML = '<span class="scroll-progress-fill"></span><span class="scroll-progress-marker"></span>';
-document.body.appendChild(scrollProgress);
+const mailingListMessage = document.querySelector('[data-mailing-list-message]');
+if (mailingListMessage && new URLSearchParams(location.search).get('subscribed') === '1') {
+  mailingListMessage.hidden = false;
+  mailingListMessage.focus();
+}
 
-let progressFrame;
-const updateScrollProgress = () => {
-  progressFrame = null;
-  const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = scrollableHeight > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollableHeight)) : 1;
-  scrollProgress.style.setProperty('--scroll-progress', progress);
-};
-
-const requestProgressUpdate = () => {
-  if (!progressFrame) progressFrame = requestAnimationFrame(updateScrollProgress);
-};
-
-window.addEventListener('scroll', requestProgressUpdate, { passive: true });
-window.addEventListener('resize', requestProgressUpdate, { passive: true });
-window.addEventListener('load', requestProgressUpdate, { once: true });
-updateScrollProgress();
+document.querySelectorAll('img').forEach(image => {
+  const showImageFallback = () => {
+    const container = image.closest('figure, .carousel-slide, .hackathon-hero-image') || image.parentElement;
+    container?.classList.add('image-load-failed');
+    image.hidden = true;
+    if (container && !container.querySelector('.image-fallback')) {
+      const fallback = document.createElement('span');
+      fallback.className = 'image-fallback';
+      fallback.textContent = 'HumAIne event photo';
+      container.appendChild(fallback);
+    }
+  };
+  image.addEventListener('error', showImageFallback, { once: true });
+  if (image.complete && image.naturalWidth === 0) showImageFallback();
+});
 
 const countdown = document.querySelector('[data-countdown]');
 
@@ -160,21 +212,23 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   const dotsContainer = carousel.querySelector('[data-carousel-dots]');
   const status = carousel.querySelector('[data-carousel-status]');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const autoOnly = carousel.hasAttribute('data-carousel-auto-only');
+  const autoplayInterval = Math.max(2000, Number(carousel.dataset.carouselInterval) || 5500);
   let activeIndex = Math.max(0, slides.findIndex(slide => slide.classList.contains('is-active')));
   let autoplayTimer = null;
   let userPaused = reduceMotion;
   let touchStartX = null;
 
-  if (slides.length < 2 || !previousButton || !nextButton || !dotsContainer) return;
+  if (slides.length < 2) return;
 
-  const dots = slides.map((_, index) => {
+  const dots = dotsContainer ? slides.map((_, index) => {
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.setAttribute('aria-label', `Show photo ${index + 1}`);
     dot.addEventListener('click', () => showSlide(index, true));
     dotsContainer.appendChild(dot);
     return dot;
-  });
+  }) : [];
 
   const stopAutoplay = () => {
     if (!autoplayTimer) return;
@@ -185,7 +239,7 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   const startAutoplay = () => {
     stopAutoplay();
     if (reduceMotion || userPaused || document.hidden) return;
-    autoplayTimer = setInterval(() => showSlide(activeIndex + 1), 5500);
+    autoplayTimer = setInterval(() => showSlide(activeIndex + 1), autoplayInterval);
   };
 
   function showSlide(index, restart = false) {
@@ -204,8 +258,8 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     if (restart) startAutoplay();
   }
 
-  previousButton.addEventListener('click', () => showSlide(activeIndex - 1, true));
-  nextButton.addEventListener('click', () => showSlide(activeIndex + 1, true));
+  previousButton?.addEventListener('click', () => showSlide(activeIndex - 1, true));
+  nextButton?.addEventListener('click', () => showSlide(activeIndex + 1, true));
   toggleButton?.addEventListener('click', () => {
     userPaused = !userPaused;
     toggleButton.textContent = userPaused ? 'Play' : 'Pause';
@@ -213,29 +267,31 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     if (userPaused) stopAutoplay();
     else startAutoplay();
   });
-  carousel.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft') showSlide(activeIndex - 1, true);
-    if (event.key === 'ArrowRight') showSlide(activeIndex + 1, true);
-  });
+  if (!autoOnly) {
+    carousel.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') showSlide(activeIndex - 1, true);
+      if (event.key === 'ArrowRight') showSlide(activeIndex + 1, true);
+    });
+    carousel.addEventListener('touchstart', event => {
+      touchStartX = event.changedTouches[0]?.clientX ?? null;
+      stopAutoplay();
+    }, { passive: true });
+    carousel.addEventListener('touchend', event => {
+      const touchEndX = event.changedTouches[0]?.clientX;
+      if (touchStartX !== null && touchEndX !== undefined) {
+        const distance = touchEndX - touchStartX;
+        if (Math.abs(distance) > 45) showSlide(activeIndex + (distance < 0 ? 1 : -1));
+      }
+      touchStartX = null;
+      startAutoplay();
+    }, { passive: true });
+  }
   carousel.addEventListener('mouseenter', stopAutoplay);
   carousel.addEventListener('mouseleave', startAutoplay);
   carousel.addEventListener('focusin', stopAutoplay);
   carousel.addEventListener('focusout', event => {
     if (!carousel.contains(event.relatedTarget)) startAutoplay();
   });
-  carousel.addEventListener('touchstart', event => {
-    touchStartX = event.changedTouches[0]?.clientX ?? null;
-    stopAutoplay();
-  }, { passive: true });
-  carousel.addEventListener('touchend', event => {
-    const touchEndX = event.changedTouches[0]?.clientX;
-    if (touchStartX !== null && touchEndX !== undefined) {
-      const distance = touchEndX - touchStartX;
-      if (Math.abs(distance) > 45) showSlide(activeIndex + (distance < 0 ? 1 : -1));
-    }
-    touchStartX = null;
-    startAutoplay();
-  }, { passive: true });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stopAutoplay();
     else startAutoplay();
@@ -356,7 +412,7 @@ if (motionAllowed && 'IntersectionObserver' in window && !isLegalPage) {
   }, { threshold: .14, rootMargin: '0px 0px -7% 0px' });
 
   document.querySelectorAll('main > section').forEach(section => {
-    const items = section.querySelectorAll('h1, h2, .lede, .section-head > p, .intro-copy, .about-copy, .registration-box, .contact-methods, .sponsor-contact-card, .legal-date, .legal-copy > p');
+    const items = section.querySelectorAll('.lede, .section-head > p, .intro-copy, .about-copy, .registration-box, .contact-methods, .sponsor-contact-card, .legal-date, .legal-copy > p');
     items.forEach((item, index) => {
       item.classList.add('reveal-item');
       item.style.setProperty('--reveal-delay', `${Math.min(index, 4) * 70}ms`);
