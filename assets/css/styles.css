@@ -3951,3 +3951,30 @@ body * {
     justify-self: start;
   }
 }
+
+/* Keep the Hackathons hero photo compact */
+.hackathon-hero-image {
+  display: grid;
+  height: clamp(360px, 36vw, 460px);
+  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.hackathon-hero-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.hackathon-hero-image figcaption {
+  padding: 10px 0 0;
+}
+
+@media (max-width: 620px) {
+  .hackathon-hero-image {
+    height: 340px;
+  }
+}
