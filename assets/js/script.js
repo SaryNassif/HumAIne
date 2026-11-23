@@ -280,12 +280,14 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
       startAutoplay();
     }, { passive: true });
   }
-  carousel.addEventListener('mouseenter', stopAutoplay);
-  carousel.addEventListener('mouseleave', startAutoplay);
-  carousel.addEventListener('focusin', stopAutoplay);
-  carousel.addEventListener('focusout', event => {
-    if (!carousel.contains(event.relatedTarget)) startAutoplay();
-  });
+  if (!autoOnly) {
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+    carousel.addEventListener('focusin', stopAutoplay);
+    carousel.addEventListener('focusout', event => {
+      if (!carousel.contains(event.relatedTarget)) startAutoplay();
+    });
+  }
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stopAutoplay();
     else startAutoplay();
