@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://humaine.ae/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://humaine.ae/</loc>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/opening-briefing.jpg</image:loc><image:title>HumAIne AMIC Blitz Hackathon opening briefing</image:title></image:image>
+  </url>
   <url><loc>https://humaine.ae/about/</loc></url>
   <url><loc>https://humaine.ae/hackathon/</loc></url>
+  <url>
+    <loc>https://humaine.ae/blitz-hackathon-2026/</loc>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/opening-briefing.jpg</image:loc><image:title>HumAIne AMIC Blitz Hackathon opening briefing</image:title></image:image>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/student-building-ai-project.jpg</image:loc><image:title>Student building an AI project at the Blitz Hackathon</image:title></image:image>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/hackathon-in-progress.jpg</image:loc><image:title>HumAIne hackathon build session in progress</image:title></image:image>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/team-presenting-to-judges.jpg</image:loc><image:title>Student team presenting an AI project to judges</image:title></image:image>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/humaine-event-team.jpg</image:loc><image:title>HumAIne event team at the AMIC Blitz Hackathon</image:title></image:image>
+    <image:image><image:loc>https://humaine.ae/assets/images/events/blitz-2026/award-recognition.jpg</image:loc><image:title>Student recognition at the HumAIne AMIC Blitz Hackathon</image:title></image:image>
+  </url>
   <url><loc>https://humaine.ae/contact/</loc></url>
 </urlset>

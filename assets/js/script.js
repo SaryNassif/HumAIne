@@ -5,6 +5,7 @@ if (location.protocol === 'file:') {
     '/': 'index.html',
     '/about/': 'pages/about.html',
     '/hackathon/': 'pages/hackathon.html',
+    '/blitz-hackathon-2026/': 'pages/blitz-hackathon-2026.html',
     '/contact/': 'pages/contact.html',
     '/privacy/': 'pages/privacy.html',
     '/terms/': 'pages/terms.html'
